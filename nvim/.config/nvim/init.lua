@@ -41,7 +41,7 @@ require("lazy").setup({
             lazy = false,
             priority = 1000,
         },
-        { "rebelot/kanagawa.nvim", lazy = true },
+        {"rebelot/kanagawa.nvim"},
 
         -- Which-Key
         {
@@ -402,6 +402,7 @@ mapkey("<leader>fw", builtin.grep_string, "[F]ind Current [W]ord | Telescope")
 mapkey("<leader>fk", ":Telescope keymaps<CR>", "[F]ind [K]eymaps | Telescope")
 mapkey("<leader>fb", ":Telescope file_browser<CR>", "[F]ind File [B]rowser | Telescope")
 mapkey("<leader>ft", ":TodoTelescope<CR>", "[F]ind [T]ODOs | Telescope")
+mapkey("<leader>fc", builtin.colorscheme, "[F]ind [C]olorschemes")
 
 mapkey("<leader>f/", function()
     builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
