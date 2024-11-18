@@ -108,20 +108,11 @@ require("lazy").setup({
         -- Fidget (Notifications)
         {"j-hui/fidget.nvim"},
 
-        -- Surround
+        -- Mini
         {
-            "kylechui/nvim-surround",
-            -- tag = "*",
-        },
-
-        -- Bufferline
-        {
-            "akinsho/bufferline.nvim",
-            -- tag = "*",
-            requires = "nvim-tree/nvim-web-devicons",
-            config = function()
-                require("bufferline").setup({})
-            end,
+            "echasnovski/mini.nvim",
+            version = false,
+            -- config = function() end,
         },
 
         -- LSP
@@ -168,10 +159,30 @@ require("lazy").setup({
             },
         },
 
+        -- NVIM Treesitter
+        -- NOTE: Treesitter
+        {
+            "nvim-treesitter/nvim-treesitter",
+            build = ":TSUpdate",
+            main = "nvim-treesitter.configs",
+            -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+            opts = {
+                ensure_installed = {
+                    "bash", "c", "lua", "luadoc", "markdown", "markdown_inline",
+                    "query", "vim", "vimdoc", "python", "diff", "html"
+                },
+                auto_install = true,
+                highlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = { "ruby" },
+                },
+                indent = { enable = true, disable = { "ruby" } },
+            },
+        },
     },
     install = { colorscheme = { "oxocarbon" } },
     checker = {
-        enabled = true,
+        enabled = false,
         notify = true,
     },
 })
@@ -346,9 +357,10 @@ mapkey(
 -- Config Plugins
 -- NOTE: Plugins Configs
 
--- Lualine
-require("lualine").setup({})
+-- Status Line
 vim.opt.showmode = false
+require("lualine").setup({})
+-- require("mini.statusline").setup({})
 
 -- Whichkey
 local whichkey = require("which-key")
@@ -400,9 +412,16 @@ end, "[/] Fuzzily search in current buffer")
 
 -- LSP Config
 -- NOTE: LST Config
-local lsp_defaults = require("lspconfig").util.default_config
+
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = vim.tbl_deep_extend(
+--     "force",
+--     capabilities,
+--     require("cmp_nvim_lsp").default_capabilities()
+-- )
 
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
+local lsp_defaults = require("lspconfig").util.default_config
 lsp_defaults.capabilities = vim.tbl_deep_extend(
     "force",
     lsp_defaults.capabilities,
@@ -422,8 +441,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 desc = "LSP: " .. desc
             })
         end
-
-        local builtin = require("telescope.builtin")
 
         map("gd", builtin.lsp_definitions, "[G]oto [D]efinition")
         map("gr", builtin.lsp_references, "[G]oto [R]eferences")
@@ -465,6 +482,7 @@ cmp.setup({
     sources = {
         { name = "nvim_lsp" },
         { name = "luasnip" },
+        { name = "path" },
     },
     completion = {
         completeopt = "menu,menuone,noinsert"
@@ -491,5 +509,8 @@ cmp.setup({
 require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./mysnippets" } })
 
 -- Surround
-require("nvim-surround").setup({})
+require("mini.surround").setup({})
+
+-- Bufferline
+require("mini.tabline").setup({})
 
