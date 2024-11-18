@@ -1,0 +1,14 @@
+{
+    "Standard Main File Layout": {
+        "prefix": "_pymain",
+        "body": [
+            "def main() -> None:",
+            "\t${1:pass}",
+            "",
+            "",
+            "if __name__ == \"__main__\":",
+            "\tmain()"
+        ],
+        "description": "Python Main file layout"
+    }
+}
