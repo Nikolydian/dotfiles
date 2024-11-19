@@ -169,7 +169,8 @@ require("lazy").setup({
             opts = {
                 ensure_installed = {
                     "bash", "c", "lua", "luadoc", "markdown", "markdown_inline",
-                    "query", "vim", "vimdoc", "python", "diff", "html"
+                    "query", "vim", "vimdoc", "python", "diff", "html", "css",
+                    "typescript", "sql",
                 },
                 auto_install = true,
                 highlight = {
@@ -300,8 +301,8 @@ mapkey("<leader><leader>s", ":so %<CR>", "[S]ource File")
 
 -- Diagnostic Keymaps
 mapkey("<leader>q", vim.diagnostic.setloclist, "Open Diagnostic [Q]uickfix List")
-mapkey("[d", vim.diagnostic.goto_prev, "Diagnostic Go to Previous")
-mapkey("]d", vim.diagnostic.goto_next, "Diagnostic Go to Next")
+mapkey("[d", vim.diagnostic.get_prev, "Diagnostic Go to Previous")
+mapkey("]d", vim.diagnostic.get_next, "Diagnostic Go to Next")
 mapkey("<leader>e", vim.diagnostic.open_float, "Diagnostic Open Float")
 
 -- Move Line UP and DOWN
@@ -412,22 +413,22 @@ mapkey("<leader>f/", function()
 end, "[/] Fuzzily search in current buffer")
 
 -- LSP Config
--- NOTE: LST Config
+-- NOTE: LSP Config
 
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = vim.tbl_deep_extend(
---     "force",
---     capabilities,
---     require("cmp_nvim_lsp").default_capabilities()
--- )
-
--- Add cmp_nvim_lsp capabilities settings to lspconfig
-local lsp_defaults = require("lspconfig").util.default_config
-lsp_defaults.capabilities = vim.tbl_deep_extend(
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = vim.tbl_deep_extend(
     "force",
-    lsp_defaults.capabilities,
+    capabilities,
     require("cmp_nvim_lsp").default_capabilities()
 )
+
+-- Add cmp_nvim_lsp capabilities settings to lspconfig
+-- local lsp_defaults = require("lspconfig").util.default_config
+-- lsp_defaults.capabilities = vim.tbl_deep_extend(
+--     "force",
+--     lsp_defaults.capabilities,
+--     require("cmp_nvim_lsp").default_capabilities()
+-- )
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
@@ -460,6 +461,24 @@ vim.api.nvim_create_autocmd("LspAttach", {
 require("neodev").setup({})
 require("fidget").setup({})
 
+-- NOTE: LSP Servers
+-- See `:help lspconfig-all`
+local servers = {
+    -- gopls = {},
+    -- pylsp = {},
+    -- rust_analyzer = {},
+    --
+    -- lua_ls = {
+    --     settings = {
+    --         Lua = {
+    --             completeion = {
+    --                 callSnippet = "Replace",
+    --             },
+    --         },
+    --     },
+    -- },
+}
+
 -- Mason Settings
 -- NOTE: Mason Config
 require("mason").setup()
@@ -469,7 +488,14 @@ require("mason-lspconfig").setup({
     handlers = {
         -- Default config
         function(server_name)
-            require("lspconfig")[server_name].setup({})
+            local server = servers[server_name] or {}
+            server.capabilities = vim.tbl_deep_extend(
+                "force",
+                {},
+                capabilities,
+                server.capabilities or {}
+            )
+            require("lspconfig")[server_name].setup(server)
         end,
     }
 })
@@ -485,9 +511,9 @@ cmp.setup({
         { name = "luasnip" },
         { name = "path" },
     },
-    completion = {
-        completeopt = "menu,menuone,noinsert"
-    },
+    -- completion = {
+    --     completeopt = "menu,menuone,noinsert"
+    -- },
     mapping = cmp.mapping.preset.insert({
         ["<C-k>"] = cmp.mapping.select_prev_item(),
         ["<C-j>"] = cmp.mapping.select_next_item(),
