@@ -301,8 +301,20 @@ mapkey("<leader><leader>s", ":so %<CR>", "[S]ource File")
 
 -- Diagnostic Keymaps
 mapkey("<leader>q", vim.diagnostic.setloclist, "Open Diagnostic [Q]uickfix List")
-mapkey("[d", vim.diagnostic.get_prev, "Diagnostic Go to Previous")
-mapkey("]d", vim.diagnostic.get_next, "Diagnostic Go to Next")
+mapkey(
+    "[d",
+    function()
+        vim.diagnostic.jump({count = -1, float = false})
+    end,
+    "Diagnostic Go to Previous"
+)
+mapkey(
+    "]d",
+    function()
+        vim.diagnostic.jump({count = 1, float = false})
+    end,
+    "Diagnostic Go to Next"
+)
 mapkey("<leader>e", vim.diagnostic.open_float, "Diagnostic Open Float")
 
 -- Move Line UP and DOWN
