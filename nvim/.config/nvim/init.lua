@@ -42,6 +42,7 @@ require("lazy").setup({
             priority = 1000,
         },
         {"rebelot/kanagawa.nvim"},
+        {"marko-cerovac/material.nvim"},
 
         -- Which-Key
         {
