@@ -1,0 +1,52 @@
+{
+    "Test Module Layout": {
+        "prefix": "_modtest",
+        "body": [
+            "#[cfg(test)]",
+            "mod test {",
+            "\tuse super::*;",
+            "",
+            "\t#[test]",
+            "\tfn ${1:test_1}() {",
+            "\t\ttodo!();",
+            "\t}",
+            "}"
+        ],
+        "description": "Rust standard test module layout"
+    },
+    "Test Function": {
+        "prefix": "_testfn",
+        "body": [
+            "#[test]",
+            "fn ${1:test_1}() {",
+            "\ttodo!();",
+            "}"
+        ],
+        "description": "Rust test function"
+    },
+    "Impl Block": {
+        "prefix": "_impl",
+        "body": [
+            "impl ${1:Type} {",
+            "}"
+        ],
+        "description": "Rust impl block"
+    },
+    "Impl<T> Block": {
+        "prefix": "_implt",
+        "body": [
+            "impl<T> ${1:Type}<T> {",
+            "}"
+        ],
+        "description": "Rust impl block"
+    },
+    "New Constructor Fn": {
+        "prefix": "_newfn",
+        "body": [
+            "pub fn new() -> Self {",
+            "\tSelf {}",
+            "}"
+        ],
+        "description": "Rust impl block"
+    }
+}

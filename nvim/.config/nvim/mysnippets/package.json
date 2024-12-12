@@ -9,6 +9,10 @@
             {
                 "language": "python",
                 "path": "./python.json"
+            },
+            {
+                "language": "rust",
+                "path": "./rust.json"
             }
         ]
     }
