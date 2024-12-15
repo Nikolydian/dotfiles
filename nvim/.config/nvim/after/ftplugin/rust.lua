@@ -10,8 +10,8 @@ vim.keymap.set("n", "<leader><leader>rb", ":w !cargo build<CR>", {
     desc = "[R]un Rust [B]uild"
 })
 
-vim.keymap.set("n", "<leader><leader>rc", ":w !cargo check<CR>", {
-    desc = "[R]un Rust [C]heck"
+vim.keymap.set("n", "<leader><leader>rk", ":w !cargo check<CR>", {
+    desc = "[R]un Rust Chec[K]"
 })
 
 vim.keymap.set("n", "<leader><leader>rx", ":w !cargo clean<CR>", {
@@ -24,6 +24,10 @@ vim.keymap.set("n", "<leader><leader>rp", ":w !cargo bench<CR>", {
 
 vim.keymap.set("n", "<leader><leader>rd", ":w !cargo doc<CR>", {
     desc = "[R]un Rust [D]ocs"
+})
+
+vim.keymap.set("n", "<leader><leader>rc", ":w !cargo clippy<CR>", {
+    desc = "[R]un Rust [C]lippy"
 })
 
 
